@@ -1,5 +1,7 @@
 package Model;
 
+import util.Log;
+
 public class ContaCorrente extends Conta {
     private double limite;
     private float taxa;
@@ -34,7 +36,8 @@ public class ContaCorrente extends Conta {
     @Override
     public void depositar(double valor) throws Exception {
         if (valor > 0) {
-            super.valor += valor;
+            super.valor = valor;
+            Log.gravar("Deposito (CC) no valor de R$ " + valor + " conta " + numero);
         } else {
             throw new Exception("Valor inválido");
         }
@@ -42,8 +45,9 @@ public class ContaCorrente extends Conta {
 
     @Override
     public void sacar(double valor) throws Exception {
-        if (valor >= (super.valor + limite)) {
+        if (valor <= (super.valor + limite)) {
             super.valor -= valor;
+            Log.gravar("Saque (CC) no valor de R$ " + valor + " conta " + numero + " o seu saldo atual é de " + super.valor);
         } else {
             throw new Exception("Saldo insuficiente");
         }
@@ -52,9 +56,10 @@ public class ContaCorrente extends Conta {
 
     @Override
     public void transeferir(Conta conta, double valor) throws Exception {
-        if(valor >= (super.valor + limite)){
+        if(valor <= (super.valor + limite)){
             sacar(valor);
             conta.depositar(valor);
+            Log.gravar("Transferencia (CC) no valor de R$ " + valor + " da conta " + numero + "para a conta " + conta.numero);
         }else {
             throw new Exception("Saldo insuficente");
         }

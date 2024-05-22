@@ -7,6 +7,7 @@ public abstract class Conta implements IOperacoes {
 
     public Conta(int numero) {
         this.numero = numero;
+        this.aitvo = true;
     }
 
     public int getNumero() {
